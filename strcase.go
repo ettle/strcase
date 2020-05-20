@@ -24,7 +24,7 @@ func ToKebab(s string) string {
 	return convertWithoutInitialisms(s, '-', LowerCase)
 }
 
-// ToKebab returns words in kebab-case (lower case words with dashes).
+// ToGoKebab returns words in kebab-case (lower case words with dashes).
 // Also known as dash-case.
 //
 // Respects Go's common initialisms (e.g. http-response -> HTTP-response).
