@@ -27,7 +27,6 @@ var testSNAKE = strcase.ToSNAKE(testLower)
 var testKebab = strcase.ToKebab(testLower)
 var testGoSnake = strcase.ToGoSnake(testLower)
 var testCamel = strcase.ToCamel(testLower)
-var testGoCamel = strcase.ToGoCamel(testLower)
 var testPascal = strcase.ToPascal(testLower)
 var testTitle = strcase.ToCase(testLower, strcase.TitleCase, ' ')
 var testSplit = strcase.ToCase(testLower, strcase.TitleCase, '_')
@@ -88,7 +87,7 @@ func BenchmarkToCustomCaser(b *testing.B) {
 	}
 }
 
-//*********************************************************
+// ********************************************************
 // Stdlib
 //
 
@@ -106,7 +105,7 @@ func BenchmarkToTitleStrings(b *testing.B) {
 	}
 }
 
-//*********************************************************
+// ********************************************************
 // Other packages
 //
 
@@ -181,7 +180,7 @@ func BenchmarkToSnakeFatih(b *testing.B) {
 	}
 }
 
-//*********************************************************
+// ********************************************************
 // Code snippets
 //
 
