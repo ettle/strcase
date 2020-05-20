@@ -15,7 +15,7 @@ linters-settings:
       - whyNoLint
       - wrapperFunc
   golint:
-    min-confidence: 0
+    min-confidence: 0.5
   govet:
     check-shadowing: true
   lll:
@@ -81,3 +81,8 @@ linters:
   # - prealloc
   # - testpackage
   # - wsl
+
+issues:
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0

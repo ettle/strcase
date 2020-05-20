@@ -166,7 +166,7 @@ func BenchmarkGoValidator(b *testing.B) {
 
 // From github.com/fatih/camelcase
 // MIT License
-// This isn't quite an even comparision since it only splits and doesn't
+// This isn't quite an even comparison since it only splits and doesn't
 // specify how to join the words back together. Figured strings.Join was
 // reasonable
 func BenchmarkToSnakeFatih(b *testing.B) {

@@ -6,11 +6,16 @@ import "strings"
 type WordCase int
 
 const (
-	Original  WordCase = iota // Preserve the original input strcase
-	LowerCase                 // All letters lower cased (example)
-	UpperCase                 // All letters upper cased (EXAMPLE)
-	TitleCase                 // Only first letter upper cased (Example)
-	CamelCase                 // TitleCase except lower case first word (exampleText)
+	// Original - Preserve the original input strcase
+	Original WordCase = iota
+	// LowerCase - All letters lower cased (example)
+	LowerCase
+	// UpperCase - All letters upper cased (EXAMPLE)
+	UpperCase
+	// TitleCase - Only first letter upper cased (Example)
+	TitleCase
+	// CamelCase - TitleCase except lower case first word (exampleText)
+	CamelCase
 )
 
 // We have 3 convert functions for performance reasons
