@@ -5,9 +5,9 @@
 [![Coverage](http://gocover.io/_badge/github.com/liyanchang/strcase?0)](http://gocover.io/github.com/liyanchang/strcase)
 [![GoDoc](https://godoc.org/github.com/liyanchang/strcase?status.svg)](https://pkg.go.dev/github.com/liyanchang/strcase)
 
-Convert strings to snake_case, camelCase, kebab-case and more! Supports Go initialisms, customization, and unicode.
+Convert strings to `snake_case`, `camelCase`, `PascalCase`, `kebab-case` and more! Supports Go initialisms, customization, and Unicode.
 
-` + "`" + `import "github.com/liyanchang/strcase"` + "`" + `
+`import "github.com/liyanchang/strcase"`
 
 * [Overview](#pkg-overview)
 * [Index](#pkg-index)
