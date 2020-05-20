@@ -1,3 +1,5 @@
+
+
 # strcase
 `import "github.com/liyanchang/strcase"`
 
@@ -229,7 +231,7 @@ Respects Go's common initialisms (e.g. httpResponse -> HTTPResponse).
 ``` go
 func ToGoKebab(s string) string
 ```
-ToKebab returns words in kebab-case (lower case words with dashes).
+ToGoKebab returns words in kebab-case (lower case words with dashes).
 Also known as dash-case.
 
 Respects Go's common initialisms (e.g. http-response -> HTTP-response).
@@ -302,20 +304,22 @@ ToSnake returns words in snake_case (lower case words with underscores).
 
 
 
-## <a name="Caser">type</a> [Caser](./caser.go#L3-L6)
+## <a name="Caser">type</a> [Caser](./caser.go#L4-L7)
 ``` go
 type Caser struct {
     // contains filtered or unexported fields
 }
 
 ```
+Caser allows for customization of parsing and intialisms
 
 
 
 
 
 
-### <a name="NewCaser">func</a> [NewCaser](./caser.go#L23)
+
+### <a name="NewCaser">func</a> [NewCaser](./caser.go#L24)
 ``` go
 func NewCaser(goInitialisms bool, initialismOverrides map[string]bool, splitFn SplitFn) *Caser
 ```
@@ -340,7 +344,7 @@ A Caser should be created when you want fine grained control over how the words 
 
 
 
-### <a name="Caser.ToCamel">func</a> (\*Caser) [ToCamel](./caser.go#L79)
+### <a name="Caser.ToCamel">func</a> (\*Caser) [ToCamel](./caser.go#L80)
 ``` go
 func (c *Caser) ToCamel(s string) string
 ```
@@ -350,7 +354,7 @@ Also known as lowerCamelCase or mixedCase.
 
 
 
-### <a name="Caser.ToCase">func</a> (\*Caser) [ToCase](./caser.go#L84)
+### <a name="Caser.ToCase">func</a> (\*Caser) [ToCase](./caser.go#L85)
 ``` go
 func (c *Caser) ToCase(s string, wordCase WordCase, delimiter rune) string
 ```
@@ -359,7 +363,7 @@ ToCase returns words with a given case and delimiter.
 
 
 
-### <a name="Caser.ToKEBAB">func</a> (\*Caser) [ToKEBAB](./caser.go#L67)
+### <a name="Caser.ToKEBAB">func</a> (\*Caser) [ToKEBAB](./caser.go#L68)
 ``` go
 func (c *Caser) ToKEBAB(s string) string
 ```
@@ -369,7 +373,7 @@ Also known as SCREAMING-KEBAB-CASE or SCREAMING-DASH-CASE.
 
 
 
-### <a name="Caser.ToKebab">func</a> (\*Caser) [ToKebab](./caser.go#L61)
+### <a name="Caser.ToKebab">func</a> (\*Caser) [ToKebab](./caser.go#L62)
 ``` go
 func (c *Caser) ToKebab(s string) string
 ```
@@ -379,7 +383,7 @@ Also known as dash-case.
 
 
 
-### <a name="Caser.ToPascal">func</a> (\*Caser) [ToPascal](./caser.go#L73)
+### <a name="Caser.ToPascal">func</a> (\*Caser) [ToPascal](./caser.go#L74)
 ``` go
 func (c *Caser) ToPascal(s string) string
 ```
@@ -389,7 +393,7 @@ Also known as UpperPascalCase.
 
 
 
-### <a name="Caser.ToSNAKE">func</a> (\*Caser) [ToSNAKE](./caser.go#L55)
+### <a name="Caser.ToSNAKE">func</a> (\*Caser) [ToSNAKE](./caser.go#L56)
 ``` go
 func (c *Caser) ToSNAKE(s string) string
 ```
@@ -399,7 +403,7 @@ Also known as SCREAMING_SNAKE_CASE or UPPER_CASE.
 
 
 
-### <a name="Caser.ToSnake">func</a> (\*Caser) [ToSnake](./caser.go#L49)
+### <a name="Caser.ToSnake">func</a> (\*Caser) [ToSnake](./caser.go#L50)
 ``` go
 func (c *Caser) ToSnake(s string) string
 ```
@@ -408,17 +412,25 @@ ToSnake returns words in snake_case (lower case words with underscores).
 
 
 
-## <a name="SplitAction">type</a> [SplitAction](./split.go#L108)
+## <a name="SplitAction">type</a> [SplitAction](./split.go#L110)
 ``` go
 type SplitAction int
 ```
+SplitAction defines if and how to split a string
+
 
 ``` go
 const (
-    Noop      SplitAction = iota // Continue to next character
-    Split                        // Split between words (e.g. to split between wordsWithoutDelimiters
-    SkipSplit                    // Split the word and drop the character (e.g. to split words with delimiters)
-    Skip                         // Remove the character completely
+    // Noop - Continue to next character
+    Noop SplitAction = iota
+    // Split - Split between words
+    // e.g. to split between wordsWithoutDelimiters
+    Split
+    // SkipSplit - Split the word and drop the character
+    // e.g. to split words with delimiters
+    SkipSplit
+    // Skip - Remove the character completely
+    Skip
 )
 ```
 
@@ -430,17 +442,19 @@ const (
 
 
 
-## <a name="SplitFn">type</a> [SplitFn](./split.go#L5)
+## <a name="SplitFn">type</a> [SplitFn](./split.go#L6)
 ``` go
 type SplitFn func(prev, curr, next rune) SplitAction
 ```
+SplitFn defines how to split a string into words
 
 
 
 
 
 
-### <a name="NewSplitFn">func</a> [NewSplitFn](./split.go#L13-L16)
+
+### <a name="NewSplitFn">func</a> [NewSplitFn](./split.go#L14-L17)
 ``` go
 func NewSplitFn(
     delimiters []rune,
@@ -458,7 +472,7 @@ nolint:gocyclo
 
 
 
-## <a name="SplitOption">type</a> [SplitOption](./split.go#L92)
+## <a name="SplitOption">type</a> [SplitOption](./split.go#L93)
 ``` go
 type SplitOption int
 ```
@@ -467,16 +481,16 @@ SplitOption are options that allow for configuring NewSplitFn
 
 ``` go
 const (
-    // SplitCase: FooBar -> Foo_Bar
+    // SplitCase - FooBar -> Foo_Bar
     SplitCase SplitOption = iota
-    // SplitAcronym: FOOBar -> Foo_Bar
+    // SplitAcronym - FOOBar -> Foo_Bar
     // It won't preserve FOO's case. If you want, you can set the Caser's initialisms so FOO will be in all caps
     SplitAcronym
-    // SplitBeforeNumbers: port80 -> port_80
+    // SplitBeforeNumber - port80 -> port_80
     SplitBeforeNumber
-    // SplitAfterNumbers: 200status -> 200_status
+    // SplitAfterNumber - 200status -> 200_status
     SplitAfterNumber
-    // PreserveNumberFormatting: a.b.2,000.3.c -> a_b_2,000.3_c
+    // PreserveNumberFormatting - a.b.2,000.3.c -> a_b_2,000.3_c
     PreserveNumberFormatting
 )
 ```
@@ -498,11 +512,16 @@ WordCase is an enumeration of the ways to format a word.
 
 ``` go
 const (
-    Original  WordCase = iota // Preserve the original input strcase
-    LowerCase                 // All letters lower cased (example)
-    UpperCase                 // All letters upper cased (EXAMPLE)
-    TitleCase                 // Only first letter upper cased (Example)
-    CamelCase                 // TitleCase except lower case first word (exampleText)
+    // Original - Preserve the original input strcase
+    Original WordCase = iota
+    // LowerCase - All letters lower cased (example)
+    LowerCase
+    // UpperCase - All letters upper cased (EXAMPLE)
+    UpperCase
+    // TitleCase - Only first letter upper cased (Example)
+    TitleCase
+    // CamelCase - TitleCase except lower case first word (exampleText)
+    CamelCase
 )
 ```
 
