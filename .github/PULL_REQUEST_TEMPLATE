@@ -1,0 +1,28 @@
+<!--
+Thanks for the contrbution! I really appreciate it
+
+FYI Our goals are to keep the API simple and the code fast.  If it can be done
+with `ToCase` or a custom Caser, it might not be a good fit.
+-->
+
+### What does this fix or improve?
+
+
+
+### Is this a breaking change API change or change in behavior?
+
+
+
+### Checklist:
+<!--
+Put an `x` in all the boxes that you've completed.
+
+You don't need to have everything done before opening a PR.
+
+If you're unsure, don't hesitate to ask. Happy to help!
+-->
+- [ ] I have updated the documentation accordingly, if needed.
+- [ ] I have added appropriate tests, if needed.
+
+
+<!-- Thanks! -->
