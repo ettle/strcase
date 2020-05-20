@@ -2,6 +2,7 @@ package strcase
 
 import "unicode"
 
+// SplitFn defines how to split a string into words
 type SplitFn func(prev, curr, next rune) SplitAction
 
 // NewSplitFn returns a SplitFn based on the options provided.
@@ -92,26 +93,33 @@ func NewSplitFn(
 type SplitOption int
 
 const (
-	// SplitCase: FooBar -> Foo_Bar
+	// SplitCase - FooBar -> Foo_Bar
 	SplitCase SplitOption = iota
-	// SplitAcronym: FOOBar -> Foo_Bar
+	// SplitAcronym - FOOBar -> Foo_Bar
 	// It won't preserve FOO's case. If you want, you can set the Caser's initialisms so FOO will be in all caps
 	SplitAcronym
-	// SplitBeforeNumbers: port80 -> port_80
+	// SplitBeforeNumber - port80 -> port_80
 	SplitBeforeNumber
-	// SplitAfterNumbers: 200status -> 200_status
+	// SplitAfterNumber - 200status -> 200_status
 	SplitAfterNumber
-	// PreserveNumberFormatting: a.b.2,000.3.c -> a_b_2,000.3_c
+	// PreserveNumberFormatting - a.b.2,000.3.c -> a_b_2,000.3_c
 	PreserveNumberFormatting
 )
 
+// SplitAction defines if and how to split a string
 type SplitAction int
 
 const (
-	Noop      SplitAction = iota // Continue to next character
-	Split                        // Split between words (e.g. to split between wordsWithoutDelimiters
-	SkipSplit                    // Split the word and drop the character (e.g. to split words with delimiters)
-	Skip                         // Remove the character completely
+	// Noop - Continue to next character
+	Noop SplitAction = iota
+	// Split - Split between words
+	// e.g. to split between wordsWithoutDelimiters
+	Split
+	// SkipSplit - Split the word and drop the character
+	// e.g. to split words with delimiters
+	SkipSplit
+	// Skip - Remove the character completely
+	Skip
 )
 
 //nolint:gocyclo

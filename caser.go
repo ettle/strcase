@@ -1,5 +1,6 @@
 package strcase
 
+// Caser allows for customization of parsing and intialisms
 type Caser struct {
 	initialisms map[string]bool
 	splitFn     SplitFn
