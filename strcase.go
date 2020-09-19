@@ -61,7 +61,9 @@ func ToCamel(s string) string {
 // ToGoCamel returns words in camelCase (capitalized words concatenated together, with first word lower case).
 // Also known as lowerCamelCase or mixedCase.
 //
-// Respects Go's common initialisms (e.g. httpResponse -> HTTPResponse).
+// Respects Go's common initialisms, but first word remains lowercased which is
+// important for code generator use cases (e.g. toJson -> toJSON, httpResponse
+// -> httpResponse).
 func ToGoCamel(s string) string {
 	return convertWithGoInitialisms(s, 0, CamelCase)
 }
