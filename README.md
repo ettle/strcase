@@ -9,9 +9,6 @@ Convert strings to `snake_case`, `camelCase`, `PascalCase`, `kebab-case` and mor
 
 `import "github.com/liyanchang/strcase"`
 
-* [Overview](#pkg-overview)
-* [Index](#pkg-index)
-
 ## <a name="pkg-overview">Overview</a>
 Package strcase is a package for converting strings into various word cases
 (e.g. snake_case, camelCase)
