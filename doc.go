@@ -19,7 +19,7 @@ Example usage
  strcase.ToSnake("FOOBar")          // foo_bar
 
  // Support Go initialisms
- strcase.ToGoCamel("http_response") // HTTPResponse
+ strcase.ToGoPascal("http_response") // HTTPResponse
 
  // Specify case and delimiter
  strcase.ToCase("HelloWorld", strcase.UpperCase, '.') // HELLO.WORLD
@@ -65,7 +65,7 @@ By default, we use the golint intialisms list. You can customize and override
 the initialisms if you wish to add additional ones, such as "SSL" or "CMS" or
 domain specific ones to your industry.
 
-  ToGoCamel("http_response") // HTTPResponse
+  ToGoPascal("http_response") // HTTPResponse
   ToGoSnake("http_response") // HTTP_response
 
 Test coverage
@@ -86,35 +86,37 @@ common cases have a large performance impact.
 Hopefully I was fair to each library and happy to rerun benchmarks differently
 or reword my commentary based on suggestions or updates.
 
-  // This package
-  // Go intialisms and custom casers are slower
-  BenchmarkToTitle-4                992491              1559 ns/op              32 B/op          1 allocs/op
-  BenchmarkToSnake-4               1000000              1475 ns/op              32 B/op          1 allocs/op
-  BenchmarkToSNAKE-4               1000000              1609 ns/op              32 B/op          1 allocs/op
-  BenchmarkToGoSnake-4              275010              3697 ns/op              44 B/op          4 allocs/op
-  BenchmarkToCustomCaser-4          342704              4191 ns/op              56 B/op          4 allocs/op
+  // This package - faster then almost all libraries
+  // Initialisms are more complicated and slightly slower, but still faster then other libraries that do less
+  BenchmarkToTitle-4                       7821166               221 ns/op              32 B/op          1 allocs/op
+  BenchmarkToSnake-4                       9378589               202 ns/op              32 B/op          1 allocs/op
+  BenchmarkToSNAKE-4                       6174453               223 ns/op              32 B/op          1 allocs/op
+  BenchmarkToGoSnake-4                     3114266               434 ns/op              44 B/op          4 allocs/op
+  BenchmarkToCustomCaser-4                 2973855               448 ns/op              56 B/op          4 allocs/op
 
   // Segment has very fast snake case and camel case libraries
   // No features or customization, but very very fast
-  BenchmarkSegment-4               1303809               938 ns/op              16 B/op          1 allocs/op
+  BenchmarkSegment-4                      24003495                64.9 ns/op            16 B/op          1 allocs/op
 
   // Stdlib strings.Title for comparison, even though it only splits on spaces
-  BenchmarkToTitleStrings-4        1213467              1164 ns/op              16 B/op          1 allocs/op
+  BenchmarkToTitleStrings-4               11259376               161 ns/op              16 B/op          1 allocs/op
 
   // Other libraries or code snippets
   // - Most are slower, by up to an order of magnitude
   // - None support initialisms or customization
   // - Some generate only camelCase or snake_case
   // - Many lack unicode support
-  BenchmarkToSnakeStoewer-4         973200              2075 ns/op              64 B/op          2 allocs/op
+  BenchmarkToSnakeStoewer-4                7103268               297 ns/op              64 B/op          2 allocs/op
   // Copying small rune arrays is slow
-  BenchmarkToSnakeSiongui-4         264315              4229 ns/op              48 B/op         10 allocs/op
-  BenchmarkGoValidator-4            206811              5152 ns/op             184 B/op          9 allocs/op
+  BenchmarkToSnakeSiongui-4                3710768               413 ns/op              48 B/op         10 allocs/op
+  BenchmarkGoValidator-4                   2416479              1049 ns/op             184 B/op          9 allocs/op
   // String alloction is slow
-  BenchmarkToSnakeFatih-4            82675             12280 ns/op             392 B/op         26 allocs/op
-  BenchmarkToSnakeIanColeman-4       83276             13903 ns/op             145 B/op         13 allocs/op
+  BenchmarkToSnakeFatih-4                  1000000              2407 ns/op             624 B/op         26 allocs/op
+  BenchmarkToSnakeIanColeman-4             1005766              1426 ns/op             160 B/op         13 allocs/op
   // Regexp is slow
-  BenchmarkToSnakeGolangPrograms-4   74448             18586 ns/op             176 B/op         11 allocs/op
+  BenchmarkToSnakeGolangPrograms-4          614689              2237 ns/op             225 B/op         11 allocs/op
+
+
 
   // These results aren't a surprise - my initial version of this library was
   // painfully slow. I think most of us, without spending some time with
