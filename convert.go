@@ -15,6 +15,9 @@ const (
 	// TitleCase - Only first letter upper cased (Example)
 	TitleCase
 	// CamelCase - TitleCase except lower case first word (exampleText)
+	// Notably, even if the first word is an initialism, it will be lower
+	// cased. This is important for code generators where capital letters
+	// mean exported functions. i.e. jsonString(), not JSONString()
 	CamelCase
 )
 
@@ -121,9 +124,11 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 		if end-start <= 5 {
 			key := strings.ToUpper(string(runes[start:end]))
 			if golintInitialisms[key] {
-				b.WriteString(key)
-				firstWord = false
-				return
+				if !firstWord || wordCase != CamelCase {
+					b.WriteString(key)
+					firstWord = false
+					return
+				}
 			}
 		}
 
@@ -221,9 +226,11 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 			}
 			key := word.String()
 			if initialisms[key] {
-				b.WriteString(key)
-				firstWord = false
-				return
+				if !firstWord || wordCase != CamelCase {
+					b.WriteString(key)
+					firstWord = false
+					return
+				}
 			}
 		}
 
