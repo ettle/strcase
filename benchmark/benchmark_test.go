@@ -6,9 +6,9 @@ import (
 	"testing"
 
 	gv "github.com/asaskevich/govalidator"
+	"github.com/ettle/strcase"
 	fa "github.com/fatih/camelcase"
 	ia "github.com/iancoleman/strcase"
-	"github.com/liyanchang/strcase"
 	se "github.com/segmentio/go-camelcase"
 	st "github.com/stoewer/go-strcase"
 )

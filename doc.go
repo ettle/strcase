@@ -2,7 +2,7 @@
 Package strcase is a package for converting strings into various word cases
 (e.g. snake_case, camelCase)
 
- go get -u github.com/liyanchang/strcase
+ go get -u github.com/ettle/strcase
 
 Example usage
 

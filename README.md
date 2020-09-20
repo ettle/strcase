@@ -1,20 +1,20 @@
 
 # Go Strcase
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/liyanchang/strcase)](https://goreportcard.com/report/github.com/liyanchang/strcase)
-[![Coverage](http://gocover.io/_badge/github.com/liyanchang/strcase?0)](http://gocover.io/github.com/liyanchang/strcase)
-[![GoDoc](https://godoc.org/github.com/liyanchang/strcase?status.svg)](https://pkg.go.dev/github.com/liyanchang/strcase)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ettle/strcase)](https://goreportcard.com/report/github.com/ettle/strcase)
+[![Coverage](http://gocover.io/_badge/github.com/ettle/strcase?0)](http://gocover.io/github.com/ettle/strcase)
+[![GoDoc](https://godoc.org/github.com/ettle/strcase?status.svg)](https://pkg.go.dev/github.com/ettle/strcase)
 
 Convert strings to `snake_case`, `camelCase`, `PascalCase`, `kebab-case` and more! Supports Go initialisms, customization, and Unicode.
 
-`import "github.com/liyanchang/strcase"`
+`import "github.com/ettle/strcase"`
 
 ## <a name="pkg-overview">Overview</a>
 Package strcase is a package for converting strings into various word cases
 (e.g. snake_case, camelCase)
 
 
-	go get -u github.com/liyanchang/strcase
+	go get -u github.com/ettle/strcase
 
 Example usage
 

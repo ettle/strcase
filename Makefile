@@ -2,7 +2,7 @@
 
 docs:
 	which godoc2ghmd || ( go get github.com/DevotedHealth/godoc2ghmd && go mod tidy )
-	godoc2ghmd -template .readme.tmpl github.com/liyanchang/strcase > README.md
+	godoc2ghmd -template .readme.tmpl github.com/ettle/strcase > README.md
 
 test:
 	go test -cover ./...
