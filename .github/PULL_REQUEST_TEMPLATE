@@ -1,5 +1,5 @@
 <!--
-Thanks for the contrbution! I really appreciate it
+Thanks for the contribution! I really appreciate it
 
 FYI Our goals are to keep the API simple and the code fast.  If it can be done
 with `ToCase` or a custom Caser, it might not be a good fit.
