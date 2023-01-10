@@ -64,6 +64,16 @@ func BenchmarkToSNAKE(b *testing.B) {
 		b.Fatalf("Expected %s, got %s", expected, s)
 	}
 }
+func BenchmarkToHeader(b *testing.B) {
+	var s string
+	for n := 0; n < b.N; n++ {
+		s = strcase.ToHeader(testCamel)
+	}
+	expected := testHeader
+	if expected != s {
+		b.Fatalf("Expected %s, got %s", expected, s)
+	}
+}
 func BenchmarkToGoSnake(b *testing.B) {
 	var s string
 	for n := 0; n < b.N; n++ {

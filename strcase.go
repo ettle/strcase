@@ -68,6 +68,11 @@ func ToGoCamel(s string) string {
 	return convertWithGoInitialisms(s, 0, CamelCase)
 }
 
+// ToHeader returns words in Header-Case (capitalized words with dashes).
+func ToHeader(s string) string {
+	return convertWithoutInitialisms(s, '-', TitleCase)
+}
+
 // ToCase returns words in given case and delimiter.
 func ToCase(s string, wordCase WordCase, delimiter rune) string {
 	return convertWithoutInitialisms(s, delimiter, wordCase)

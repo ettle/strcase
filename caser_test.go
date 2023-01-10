@@ -18,6 +18,7 @@ func TestCaserAll(t *testing.T) {
 		KEBAB  string
 		pascal string
 		camel  string
+		header string
 		title  string
 	}
 	for _, test := range []data{
@@ -29,6 +30,7 @@ func TestCaserAll(t *testing.T) {
 			KEBAB:  "HELLO-WORLD!",
 			pascal: "HelloWorld!",
 			camel:  "helloWorld!",
+			header: "Hello-World!",
 			title:  "Hello World!",
 		},
 	} {
@@ -41,6 +43,7 @@ func TestCaserAll(t *testing.T) {
 				KEBAB:  c.ToKEBAB(test.input),
 				pascal: c.ToPascal(test.input),
 				camel:  c.ToCamel(test.input),
+				header: c.ToHeader(test.input),
 				title:  c.ToCase(test.input, TitleCase, ' '),
 			}
 			assert.Equal(t, test, output)

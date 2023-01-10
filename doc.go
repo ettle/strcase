@@ -11,6 +11,7 @@ Example usage
 
  strcase.ToKebab("helloWorld")      // hello-world
  strcase.ToKEBAB("helloWorld")      // HELLO-WORLD
+ strcase.ToHeader("helloWorld")     // Hello-World
 
  strcase.ToPascal("hello-world")    // HelloWorld
  strcase.ToCamel("hello-world")     // helloWorld

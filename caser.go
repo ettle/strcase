@@ -81,6 +81,11 @@ func (c *Caser) ToCamel(s string) string {
 	return convert(s, c.splitFn, '\x00', CamelCase, c.initialisms)
 }
 
+// ToHeader returns words in Header-Case (capitalized words with dashes).
+func (c *Caser) ToHeader(s string) string {
+	return convert(s, c.splitFn, '-', TitleCase, c.initialisms)
+}
+
 // ToCase returns words with a given case and delimiter.
 func (c *Caser) ToCase(s string, wordCase WordCase, delimiter rune) string {
 	return convert(s, c.splitFn, delimiter, wordCase, c.initialisms)
