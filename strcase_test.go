@@ -10,8 +10,8 @@ import (
 // Obviously 100% test coverage isn't everything but...
 func TestEdges(t *testing.T) {
 	t.Run("Original WordCase", func(t *testing.T) {
-		assertTrue(t, "FreeBSD" == convertWithoutInitialisms("FreeBSD", 0, Original))
-		assertTrue(t, "FreeBSD" == convertWithGoInitialisms("FreeBSD", 0, Original))
+		assertEqual(t, "FreeBSD", convertWithoutInitialisms("FreeBSD", 0, Original))
+		assertEqual(t, "FreeBSD", convertWithGoInitialisms("FreeBSD", 0, Original))
 	})
 	t.Run("Don't call convertWithInitialisms for UpperCase", func(t *testing.T) {
 		defer func() {

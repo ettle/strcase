@@ -68,7 +68,7 @@ func TestNewCaser(t *testing.T) {
 		assertTrue(t, !c.initialisms["UUID"])
 		assertTrue(t, c.initialisms["SSL"])
 		assertTrue(t, !c.initialisms["HTML"])
-		assertTrue(t, "hTml with SSL" == c.ToCase("hTml with SsL", Original, ' '))
+		assertEqual(t, "hTml with SSL", c.ToCase("hTml with SsL", Original, ' '))
 		assertTrue(t, c.splitFn != nil)
 	})
 
@@ -83,8 +83,8 @@ func TestNewCaser(t *testing.T) {
 				PreserveNumberFormatting,
 			))
 		assertTrue(t, !reflect.DeepEqual(golintInitialisms, c.initialisms))
-		assertTrue(t, "http200" == c.ToSnake("http200"))
-		assertTrue(t, "VERSION2.3_R3_8A_HTTP_ERROR_CODE" == c.ToSNAKE("version2.3R3*8a,HTTPErrorCode"))
+		assertEqual(t, "http200", c.ToSnake("http200"))
+		assertEqual(t, "VERSION2.3_R3_8A_HTTP_ERROR_CODE", c.ToSNAKE("version2.3R3*8a,HTTPErrorCode"))
 	})
 
 	t.Run("Preserve number formatting and split before and after number", func(t *testing.T) {
@@ -99,8 +99,8 @@ func TestNewCaser(t *testing.T) {
 				SplitBeforeNumber,
 				SplitAfterNumber,
 			))
-		assertTrue(t, "http_200" == c.ToSnake("http200"))
-		assertTrue(t, "VERSION_2.3_R_3_8_A_HTTP_ERROR_CODE" == c.ToSNAKE("version2.3R3*8a,HTTPErrorCode"))
+		assertEqual(t, "http_200", c.ToSnake("http200"))
+		assertEqual(t, "VERSION_2.3_R_3_8_A_HTTP_ERROR_CODE", c.ToSNAKE("version2.3R3*8a,HTTPErrorCode"))
 	})
 
 	t.Run("Skip non letters", func(t *testing.T) {
@@ -115,7 +115,7 @@ func TestNewCaser(t *testing.T) {
 				}
 				return Skip
 			})
-		assertTrue(t, "" == c.ToSnake(""))
-		assertTrue(t, "1130_23_2009" == c.ToCase("DateTime: 11:30 AM May 23rd, 2009", Original, '_'))
+		assertEqual(t, "", c.ToSnake(""))
+		assertEqual(t, "1130_23_2009", c.ToCase("DateTime: 11:30 AM May 23rd, 2009", Original, '_'))
 	})
 }
