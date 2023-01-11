@@ -93,9 +93,9 @@ func BenchmarkToCustomCaser(b *testing.B) {
 // Stdlib
 //
 
-// strings.ToTitle from the standard library is now depreacted
-// with golang.org/x/text/cases as the recommended replacement
-func BenchmarkToTitleStrings(b *testing.B) {
+// golang.org/x/text/cases is the recommended replacement
+// for stdlib's now deprecated strings.ToTitle
+func BenchmarkGolangOrgXTextCases(b *testing.B) {
 	caser := cases.Title(language.AmericanEnglish)
 	var s string
 	for n := 0; n < b.N; n++ {
