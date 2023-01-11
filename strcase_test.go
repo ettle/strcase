@@ -5,20 +5,21 @@ import (
 	"regexp"
 	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 // Obviously 100% test coverage isn't everything but...
 func TestEdges(t *testing.T) {
 	t.Run("Original WordCase", func(t *testing.T) {
-		assert.Equal(t, "FreeBSD", convertWithoutInitialisms("FreeBSD", 0, Original))
-		assert.Equal(t, "FreeBSD", convertWithGoInitialisms("FreeBSD", 0, Original))
+		assertTrue(t, "FreeBSD" == convertWithoutInitialisms("FreeBSD", 0, Original))
+		assertTrue(t, "FreeBSD" == convertWithGoInitialisms("FreeBSD", 0, Original))
 	})
-	t.Run("Don't call convertWithInitialisms for UppserCase", func(t *testing.T) {
-		assert.Panics(t, func() {
-			convertWithGoInitialisms("foo", 0, UpperCase)
-		})
+	t.Run("Don't call convertWithInitialisms for UpperCase", func(t *testing.T) {
+		defer func() {
+			if r := recover(); r == nil {
+				t.Errorf("The code did not panic")
+			}
+		}()
+		convertWithGoInitialisms("foo", 0, UpperCase)
 	})
 }
 
@@ -790,7 +791,7 @@ func TestAll(t *testing.T) {
 				line = regexp.MustCompile("\"\n").ReplaceAllString(line, "\",\n")
 				fmt.Println(line)
 			}
-			assert.Equal(t, test, output)
+			assertTrue(t, test == output)
 		})
 	}
 }

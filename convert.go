@@ -29,6 +29,7 @@ const (
 // Case 2: UpperCase words, which don't need to support initialisms since everything is in upper case
 
 // convertWithoutInitialims only works for to UpperCase and LowerCase
+//
 //nolint:gocyclo
 func convertWithoutInitialisms(input string, delimiter rune, wordCase WordCase) string {
 	input = strings.TrimSpace(input)
@@ -97,6 +98,7 @@ func convertWithoutInitialisms(input string, delimiter rune, wordCase WordCase) 
 
 // convertWithGoInitialisms changes a input string to a certain case with a
 // delimiter, respecting go initialisms but not skip runes
+//
 //nolint:gocyclo
 func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) string {
 	input = strings.TrimSpace(input)
@@ -188,6 +190,7 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 
 // convert changes a input string to a certain case with a delimiter,
 // respecting arbitrary initialisms and skip characters
+//
 //nolint:gocyclo
 func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 	initialisms map[string]bool) string {

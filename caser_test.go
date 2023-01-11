@@ -1,10 +1,9 @@
 package strcase
 
 import (
+	"reflect"
 	"testing"
 	"unicode"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestCaserAll(t *testing.T) {
@@ -43,7 +42,7 @@ func TestCaserAll(t *testing.T) {
 				camel:  c.ToCamel(test.input),
 				title:  c.ToCase(test.input, TitleCase, ' '),
 			}
-			assert.Equal(t, test, output)
+			assertTrue(t, test == output)
 		})
 	}
 }
@@ -51,26 +50,26 @@ func TestCaserAll(t *testing.T) {
 func TestNewCaser(t *testing.T) {
 	t.Run("Has defaults when unspecified", func(t *testing.T) {
 		c := NewCaser(true, nil, nil)
-		assert.Equal(t, golintInitialisms, c.initialisms)
-		assert.NotNil(t, c.splitFn)
+		assertTrue(t, reflect.DeepEqual(golintInitialisms, c.initialisms))
+		assertTrue(t, c.splitFn != nil)
 	})
 	t.Run("Merges", func(t *testing.T) {
 		c := NewCaser(true, map[string]bool{"SSL": true, "HTML": false}, nil)
-		assert.NotEqual(t, golintInitialisms, c.initialisms)
-		assert.True(t, c.initialisms["UUID"])
-		assert.True(t, c.initialisms["SSL"])
-		assert.False(t, c.initialisms["HTML"])
-		assert.NotNil(t, c.splitFn)
+		assertTrue(t, !reflect.DeepEqual(golintInitialisms, c.initialisms))
+		assertTrue(t, c.initialisms["UUID"])
+		assertTrue(t, c.initialisms["SSL"])
+		assertTrue(t, !c.initialisms["HTML"])
+		assertTrue(t, c.splitFn != nil)
 	})
 
 	t.Run("No Go initialisms", func(t *testing.T) {
 		c := NewCaser(false, map[string]bool{"SSL": true, "HTML": false}, NewSplitFn([]rune{' '}))
-		assert.NotEqual(t, golintInitialisms, c.initialisms)
-		assert.False(t, c.initialisms["UUID"])
-		assert.True(t, c.initialisms["SSL"])
-		assert.False(t, c.initialisms["HTML"])
-		assert.Equal(t, "hTml with SSL", c.ToCase("hTml with SsL", Original, ' '))
-		assert.NotNil(t, c.splitFn)
+		assertTrue(t, !reflect.DeepEqual(golintInitialisms, c.initialisms))
+		assertTrue(t, !c.initialisms["UUID"])
+		assertTrue(t, c.initialisms["SSL"])
+		assertTrue(t, !c.initialisms["HTML"])
+		assertTrue(t, "hTml with SSL" == c.ToCase("hTml with SsL", Original, ' '))
+		assertTrue(t, c.splitFn != nil)
 	})
 
 	t.Run("Preserve number formatting", func(t *testing.T) {
@@ -83,9 +82,9 @@ func TestNewCaser(t *testing.T) {
 				SplitAcronym,
 				PreserveNumberFormatting,
 			))
-		assert.NotEqual(t, golintInitialisms, c.initialisms)
-		assert.Equal(t, "http200", c.ToSnake("http200"))
-		assert.Equal(t, "VERSION2.3_R3_8A_HTTP_ERROR_CODE", c.ToSNAKE("version2.3R3*8a,HTTPErrorCode"))
+		assertTrue(t, !reflect.DeepEqual(golintInitialisms, c.initialisms))
+		assertTrue(t, "http200" == c.ToSnake("http200"))
+		assertTrue(t, "VERSION2.3_R3_8A_HTTP_ERROR_CODE" == c.ToSNAKE("version2.3R3*8a,HTTPErrorCode"))
 	})
 
 	t.Run("Preserve number formatting and split before and after number", func(t *testing.T) {
@@ -100,8 +99,8 @@ func TestNewCaser(t *testing.T) {
 				SplitBeforeNumber,
 				SplitAfterNumber,
 			))
-		assert.Equal(t, "http_200", c.ToSnake("http200"))
-		assert.Equal(t, "VERSION_2.3_R_3_8_A_HTTP_ERROR_CODE", c.ToSNAKE("version2.3R3*8a,HTTPErrorCode"))
+		assertTrue(t, "http_200" == c.ToSnake("http200"))
+		assertTrue(t, "VERSION_2.3_R_3_8_A_HTTP_ERROR_CODE" == c.ToSNAKE("version2.3R3*8a,HTTPErrorCode"))
 	})
 
 	t.Run("Skip non letters", func(t *testing.T) {
@@ -116,7 +115,7 @@ func TestNewCaser(t *testing.T) {
 				}
 				return Skip
 			})
-		assert.Equal(t, "", c.ToSnake(""))
-		assert.Equal(t, "1130_23_2009", c.ToCase("DateTime: 11:30 AM May 23rd, 2009", Original, '_'))
+		assertTrue(t, "" == c.ToSnake(""))
+		assertTrue(t, "1130_23_2009" == c.ToCase("DateTime: 11:30 AM May 23rd, 2009", Original, '_'))
 	})
 }
