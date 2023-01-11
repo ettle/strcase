@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	gv "github.com/asaskevich/govalidator"
 	"github.com/ettle/strcase"
 	fa "github.com/fatih/camelcase"
 	ia "github.com/iancoleman/strcase"
@@ -92,9 +93,9 @@ func BenchmarkToCustomCaser(b *testing.B) {
 // Stdlib
 //
 
-// golang.org/x/text/cases is the recommended replacement
-// for stdlib's now deprecated strings.ToTitle
-func BenchmarkXTextCases(b *testing.B) {
+// strings.ToTitle from the standard library is now depreacted
+// with golang.org/x/text/cases as the recommended replacement
+func BenchmarkToTitleStrings(b *testing.B) {
 	caser := cases.Title(language.AmericanEnglish)
 	var s string
 	for n := 0; n < b.N; n++ {
@@ -146,6 +147,17 @@ func BenchmarkToSnakeStoewer(b *testing.B) {
 	var s string
 	for n := 0; n < b.N; n++ {
 		s = st.SnakeCase(testCamel)
+	}
+	expected := testSnake
+	if expected != s {
+		b.Fatalf("Expected %s, got %s", expected, s)
+	}
+}
+
+func BenchmarkGoValidator(b *testing.B) {
+	var s string
+	for n := 0; n < b.N; n++ {
+		s = gv.CamelCaseToUnderscore(testCamel)
 	}
 	expected := testSnake
 	if expected != s {
