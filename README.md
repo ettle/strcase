@@ -32,7 +32,7 @@ Example usage
 	strcase.ToSnake("FOOBar")          // foo_bar
 	
 	// Support Go initialisms
-	strcase.ToGoCamel("http_response") // HTTPResponse
+	strcase.ToGoPascal("http_response") // HTTPResponse
 	
 	// Specify case and delimiter
 	strcase.ToCase("HelloWorld", strcase.UpperCase, '.') // HELLO.WORLD
@@ -76,7 +76,7 @@ the initialisms if you wish to add additional ones, such as "SSL" or "CMS" or
 domain specific ones to your industry.
 
 
-	ToGoCamel("http_response") // HTTPResponse
+	ToGoPascal("http_response") // HTTPResponse
 	ToGoSnake("http_response") // HTTP_response
 
 ### Test coverage
@@ -96,35 +96,35 @@ Hopefully I was fair to each library and happy to rerun benchmarks differently
 or reword my commentary based on suggestions or updates.
 
 
-	// This package
-	// Go intialisms and custom casers are slower
-	BenchmarkToTitle-4                992491              1559 ns/op              32 B/op          1 allocs/op
-	BenchmarkToSnake-4               1000000              1475 ns/op              32 B/op          1 allocs/op
-	BenchmarkToSNAKE-4               1000000              1609 ns/op              32 B/op          1 allocs/op
-	BenchmarkToGoSnake-4              275010              3697 ns/op              44 B/op          4 allocs/op
-	BenchmarkToCustomCaser-4          342704              4191 ns/op              56 B/op          4 allocs/op
+	// This package - faster then almost all libraries
+	// Initialisms are more complicated and slightly slower, but still faster then other libraries that do less
+	BenchmarkToTitle-4                       7821166               221 ns/op              32 B/op          1 allocs/op
+	BenchmarkToSnake-4                       9378589               202 ns/op              32 B/op          1 allocs/op
+	BenchmarkToSNAKE-4                       6174453               223 ns/op              32 B/op          1 allocs/op
+	BenchmarkToGoSnake-4                     3114266               434 ns/op              44 B/op          4 allocs/op
+	BenchmarkToCustomCaser-4                 2973855               448 ns/op              56 B/op          4 allocs/op
 	
 	// Segment has very fast snake case and camel case libraries
 	// No features or customization, but very very fast
-	BenchmarkSegment-4               1303809               938 ns/op              16 B/op          1 allocs/op
+	BenchmarkSegment-4                      24003495                64.9 ns/op            16 B/op          1 allocs/op
 	
 	// Stdlib strings.Title for comparison, even though it only splits on spaces
-	BenchmarkToTitleStrings-4        1213467              1164 ns/op              16 B/op          1 allocs/op
+	BenchmarkToTitleStrings-4               11259376               161 ns/op              16 B/op          1 allocs/op
 	
 	// Other libraries or code snippets
 	// - Most are slower, by up to an order of magnitude
 	// - None support initialisms or customization
 	// - Some generate only camelCase or snake_case
 	// - Many lack unicode support
-	BenchmarkToSnakeStoewer-4         973200              2075 ns/op              64 B/op          2 allocs/op
+	BenchmarkToSnakeStoewer-4                7103268               297 ns/op              64 B/op          2 allocs/op
 	// Copying small rune arrays is slow
-	BenchmarkToSnakeSiongui-4         264315              4229 ns/op              48 B/op         10 allocs/op
-	BenchmarkGoValidator-4            206811              5152 ns/op             184 B/op          9 allocs/op
+	BenchmarkToSnakeSiongui-4                3710768               413 ns/op              48 B/op         10 allocs/op
+	BenchmarkGoValidator-4                   2416479              1049 ns/op             184 B/op          9 allocs/op
 	// String alloction is slow
-	BenchmarkToSnakeFatih-4            82675             12280 ns/op             392 B/op         26 allocs/op
-	BenchmarkToSnakeIanColeman-4       83276             13903 ns/op             145 B/op         13 allocs/op
+	BenchmarkToSnakeFatih-4                  1000000              2407 ns/op             624 B/op         26 allocs/op
+	BenchmarkToSnakeIanColeman-4             1005766              1426 ns/op             160 B/op         13 allocs/op
 	// Regexp is slow
-	BenchmarkToSnakeGolangPrograms-4   74448             18586 ns/op             176 B/op         11 allocs/op
+	BenchmarkToSnakeGolangPrograms-4          614689              2237 ns/op             225 B/op         11 allocs/op
 	
 	// These results aren't a surprise - my initial version of this library was
 	// painfully slow. I think most of us, without spending some time with
@@ -161,32 +161,32 @@ custom casers to mimic the behavior of the other package.
 
 
 ## <a name="pkg-index">Index</a>
-* [func ToCamel(s string) string](#ToCamel)
-* [func ToCase(s string, wordCase WordCase, delimiter rune) string](#ToCase)
-* [func ToGoCamel(s string) string](#ToGoCamel)
-* [func ToGoCase(s string, wordCase WordCase, delimiter rune) string](#ToGoCase)
-* [func ToGoKebab(s string) string](#ToGoKebab)
-* [func ToGoPascal(s string) string](#ToGoPascal)
-* [func ToGoSnake(s string) string](#ToGoSnake)
-* [func ToKEBAB(s string) string](#ToKEBAB)
-* [func ToKebab(s string) string](#ToKebab)
-* [func ToPascal(s string) string](#ToPascal)
-* [func ToSNAKE(s string) string](#ToSNAKE)
-* [func ToSnake(s string) string](#ToSnake)
-* [type Caser](#Caser)
-  * [func NewCaser(goInitialisms bool, initialismOverrides map[string]bool, splitFn SplitFn) *Caser](#NewCaser)
-  * [func (c *Caser) ToCamel(s string) string](#Caser.ToCamel)
-  * [func (c *Caser) ToCase(s string, wordCase WordCase, delimiter rune) string](#Caser.ToCase)
-  * [func (c *Caser) ToKEBAB(s string) string](#Caser.ToKEBAB)
-  * [func (c *Caser) ToKebab(s string) string](#Caser.ToKebab)
-  * [func (c *Caser) ToPascal(s string) string](#Caser.ToPascal)
-  * [func (c *Caser) ToSNAKE(s string) string](#Caser.ToSNAKE)
-  * [func (c *Caser) ToSnake(s string) string](#Caser.ToSnake)
-* [type SplitAction](#SplitAction)
-* [type SplitFn](#SplitFn)
-  * [func NewSplitFn(delimiters []rune, splitOptions ...SplitOption) SplitFn](#NewSplitFn)
-* [type SplitOption](#SplitOption)
-* [type WordCase](#WordCase)
+* [func ToCamel(s string) string](#func-ToCamel)
+* [func ToCase(s string, wordCase WordCase, delimiter rune) string](#func-ToCase)
+* [func ToGoCamel(s string) string](#func-ToGoCamel)
+* [func ToGoCase(s string, wordCase WordCase, delimiter rune) string](#func-ToGoCase)
+* [func ToGoKebab(s string) string](#func-ToGoKebab)
+* [func ToGoPascal(s string) string](#func-ToGoPascal)
+* [func ToGoSnake(s string) string](#func-ToGoSnake)
+* [func ToKEBAB(s string) string](#func-ToKEBAB)
+* [func ToKebab(s string) string](#func-ToKebab)
+* [func ToPascal(s string) string](#func-ToPascal)
+* [func ToSNAKE(s string) string](#func-ToSNAKE)
+* [func ToSnake(s string) string](#func-ToSnake)
+* [type Caser](#type-Caser)
+  * [func NewCaser(goInitialisms bool, initialismOverrides map[string]bool, splitFn SplitFn) *Caser](#func-NewCaser)
+  * [func (c *Caser) ToCamel(s string) string](#type-Caser.ToCamel)
+  * [func (c *Caser) ToCase(s string, wordCase WordCase, delimiter rune) string](#type-Caser.ToCase)
+  * [func (c *Caser) ToKEBAB(s string) string](#type-Caser.ToKEBAB)
+  * [func (c *Caser) ToKebab(s string) string](#type-Caser.ToKebab)
+  * [func (c *Caser) ToPascal(s string) string](#type-Caser.ToPascal)
+  * [func (c *Caser) ToSNAKE(s string) string](#type-Caser.ToSNAKE)
+  * [func (c *Caser) ToSnake(s string) string](#type-Caser.ToSnake)
+* [type SplitAction](#type-SplitAction)
+* [type SplitFn](#type-SplitFn)
+  * [func NewSplitFn(delimiters []rune, splitOptions ...SplitOption) SplitFn](#func-NewSplitFn)
+* [type SplitOption](#type-SplitOption)
+* [type WordCase](#type-WordCase)
 
 
 
@@ -201,7 +201,7 @@ Also known as lowerCamelCase or mixedCase.
 
 
 
-## <a name="ToCase">func</a> [ToCase](./strcase.go#L70)
+## <a name="ToCase">func</a> [ToCase](./strcase.go#L72)
 ``` go
 func ToCase(s string, wordCase WordCase, delimiter rune) string
 ```
@@ -209,18 +209,20 @@ ToCase returns words in given case and delimiter.
 
 
 
-## <a name="ToGoCamel">func</a> [ToGoCamel](./strcase.go#L65)
+## <a name="ToGoCamel">func</a> [ToGoCamel](./strcase.go#L67)
 ``` go
 func ToGoCamel(s string) string
 ```
 ToGoCamel returns words in camelCase (capitalized words concatenated together, with first word lower case).
 Also known as lowerCamelCase or mixedCase.
 
-Respects Go's common initialisms (e.g. httpResponse -> HTTPResponse).
+Respects Go's common initialisms, but first word remains lowercased which is
+important for code generator use cases (e.g. toJson -> toJSON, httpResponse
+-> httpResponse).
 
 
 
-## <a name="ToGoCase">func</a> [ToGoCase](./strcase.go#L77)
+## <a name="ToGoCase">func</a> [ToGoCase](./strcase.go#L79)
 ``` go
 func ToGoCase(s string, wordCase WordCase, delimiter rune) string
 ```
@@ -524,6 +526,9 @@ const (
     // TitleCase - Only first letter upper cased (Example)
     TitleCase
     // CamelCase - TitleCase except lower case first word (exampleText)
+    // Notably, even if the first word is an initialism, it will be lower
+    // cased. This is important for code generators where capital letters
+    // mean exported functions. i.e. jsonString(), not JSONString()
     CamelCase
 )
 ```
