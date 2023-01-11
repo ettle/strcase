@@ -11,6 +11,8 @@ import (
 	ia "github.com/iancoleman/strcase"
 	se "github.com/segmentio/go-camelcase"
 	st "github.com/stoewer/go-strcase"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 // Test cases:
@@ -91,13 +93,13 @@ func BenchmarkToCustomCaser(b *testing.B) {
 // Stdlib
 //
 
-// strings.ToTitle from the standard library
-// While it doesn't split on anything but spaces, figured it would be a good
-// test of what a no frills function might clock in at
+// strings.ToTitle from the standard library is now depreacted
+// with golang.org/x/text/cases as the recommended replacement
 func BenchmarkToTitleStrings(b *testing.B) {
+	caser := cases.Title(language.AmericanEnglish)
 	var s string
 	for n := 0; n < b.N; n++ {
-		s = strings.Title(testLower)
+		s = caser.String(testLower)
 	}
 	expected := testTitle
 	if expected != s {
