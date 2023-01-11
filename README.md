@@ -37,16 +37,19 @@ Example usage
 	// Specify case and delimiter
 	strcase.ToCase("HelloWorld", strcase.UpperCase, '.') // HELLO.WORLD
 
-### Why this package
+## Why this package
+
 String strcase is pretty straight forward and there are a number of methods to
 do it. This package is fully featured, more customizable, better tested, and
 faster* than other packages and what you would probably whip up yourself.
 
 ### Unicode support
+
 We work for with unicode strings and pay very little performance penalty for it
 as we optimized for the common use case of ASCII only strings.
 
 ### Customization
+
 You can create a custom caser that changes the behavior to what you want. This
 customization also reduces the pressure for us to change the default behavior
 which means that things are more stable for everyone involved.  The goal is to
@@ -71,6 +74,7 @@ make the common path easy and fast, while making the uncommon path possible.
 	 assert.Equal(t, "http_200", c.ToSnake("http200"))
 
 ### Initialism support
+
 By default, we use the golint intialisms list. You can customize and override
 the initialisms if you wish to add additional ones, such as "SSL" or "CMS" or
 domain specific ones to your industry.
@@ -80,10 +84,12 @@ domain specific ones to your industry.
 	ToGoSnake("http_response") // HTTP_response
 
 ### Test coverage
+
 We have a wide ranging test suite to make sure that we understand our behavior.
 Test coverage isn't everything, but we aim for 100% coverage.
 
 ### Fast
+
 Optimized to reduce memory allocations with Builder. Benchmarked and optimized
 around common cases.
 
@@ -130,22 +136,20 @@ or reword my commentary based on suggestions or updates.
 	// painfully slow. I think most of us, without spending some time with
 	// profilers and benchmarks, would write also something on the slower side.
 
-### Why not this package
+### Zero dependencies
+
+That's right - zero. We only import Go standard library. No hassles with
+dependencies, licensing, security alerts.
+
+## Why not this package
+
 If every nanosecond matters and this is used in a tight loop, use segment.io's
 libraries (<a href="https://github.com/segmentio/go-snakecase">https://github.com/segmentio/go-snakecase</a> and
 <a href="https://github.com/segmentio/go-camelcase">https://github.com/segmentio/go-camelcase</a>). They lack features, but make up for
-it by being blazing fast. Alternatively, if you need your code to work slightly
-differently, fork them and tailor it for your use case.
+it by being blazing fast.
 
-If you don't like having external imports, I get it. This package only imports
-packages for testing, otherwise it only uses the standard library. If that's
-not enough, you can use this repo as the foundation for your own. MIT Licensed.
+## Migrating from other packages
 
-This package is still relatively new and while I've used it for a while
-personally, it doesn't have the miles that other packages do. I've tested this
-code agains't their test cases to make sure that there aren't any surprises.
-
-### Migrating from other packages
 If you are migrating from from another package, you may find slight differences
 in output. To reduce the delta, you may find it helpful to use the following
 custom casers to mimic the behavior of the other package.
@@ -417,7 +421,7 @@ ToSnake returns words in snake_case (lower case words with underscores).
 
 
 
-## <a name="SplitAction">type</a> [SplitAction](./split.go#L110)
+## <a name="SplitAction">type</a> [SplitAction](./split.go#L111)
 ``` go
 type SplitAction int
 ```
@@ -459,7 +463,7 @@ SplitFn defines how to split a string into words
 
 
 
-### <a name="NewSplitFn">func</a> [NewSplitFn](./split.go#L14-L17)
+### <a name="NewSplitFn">func</a> [NewSplitFn](./split.go#L15-L18)
 ``` go
 func NewSplitFn(
     delimiters []rune,
@@ -471,13 +475,12 @@ NewSplitFn returns a SplitFn based on the options provided.
 NewSplitFn covers the majority of common options that other strcase
 libraries provide and should allow you to simply create a custom caser.
 For more complicated use cases, feel free to write your own SplitFn
-nolint:gocyclo
 
 
 
 
 
-## <a name="SplitOption">type</a> [SplitOption](./split.go#L93)
+## <a name="SplitOption">type</a> [SplitOption](./split.go#L94)
 ``` go
 type SplitOption int
 ```

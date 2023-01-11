@@ -24,18 +24,18 @@ Example usage
 	// Specify case and delimiter
 	strcase.ToCase("HelloWorld", strcase.UpperCase, '.') // HELLO.WORLD
 
-# Why this package
+## Why this package
 
 String strcase is pretty straight forward and there are a number of methods to
 do it. This package is fully featured, more customizable, better tested, and
 faster* than other packages and what you would probably whip up yourself.
 
-## Unicode support
+### Unicode support
 
 We work for with unicode strings and pay very little performance penalty for it
 as we optimized for the common use case of ASCII only strings.
 
-## Customization
+### Customization
 
 You can create a custom caser that changes the behavior to what you want. This
 customization also reduces the pressure for us to change the default behavior
@@ -59,7 +59,7 @@ make the common path easy and fast, while making the uncommon path possible.
 	 	))
 	 assert.Equal(t, "http_200", c.ToSnake("http200"))
 
-## Initialism support
+### Initialism support
 
 By default, we use the golint intialisms list. You can customize and override
 the initialisms if you wish to add additional ones, such as "SSL" or "CMS" or
@@ -68,12 +68,12 @@ domain specific ones to your industry.
 	ToGoPascal("http_response") // HTTPResponse
 	ToGoSnake("http_response") // HTTP_response
 
-## Test coverage
+### Test coverage
 
 We have a wide ranging test suite to make sure that we understand our behavior.
 Test coverage isn't everything, but we aim for 100% coverage.
 
-## Fast
+### Fast
 
 Optimized to reduce memory allocations with Builder. Benchmarked and optimized
 around common cases.
@@ -121,19 +121,19 @@ or reword my commentary based on suggestions or updates.
 	// painfully slow. I think most of us, without spending some time with
 	// profilers and benchmarks, would write also something on the slower side.
 
-# Zero dependencies
+### Zero dependencies
 
 That's right - zero. We only import Go standard library. No hassles with
 dependencies, licensing, security alerts.
 
-# Why not this package
+## Why not this package
 
 If every nanosecond matters and this is used in a tight loop, use segment.io's
 libraries (https://github.com/segmentio/go-snakecase and
 https://github.com/segmentio/go-camelcase). They lack features, but make up for
 it by being blazing fast.
 
-# Migrating from other packages
+## Migrating from other packages
 
 If you are migrating from from another package, you may find slight differences
 in output. To reduce the delta, you may find it helpful to use the following
