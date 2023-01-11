@@ -21,8 +21,3 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.50
-      - name: golangci-lint-benchmark
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: v1.50
-          args: ./benchmark/*.go
