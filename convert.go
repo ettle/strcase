@@ -1,8 +1,11 @@
 package strcase
 
 import "strings"
+import "fmt"
 
 // WordCase is an enumeration of the ways to format a word.
+// The first 16 bits are base casers
+// The second 16 bits are options
 type WordCase int
 
 const (
@@ -19,6 +22,16 @@ const (
 	// cased. This is important for code generators where capital letters
 	// mean exported functions. i.e. jsonString(), not JSONString()
 	CamelCase
+)
+
+// Other word case options
+const (
+	WordCaseMask       = 0xFFFF
+	WordCaseOptionMask = 0xFFFF << 16
+	// If the entire word is all capitalized, keep them capitalized
+	// Works will all cases, but really only interesting for LowerCase,
+	// TitleCase, and CamelCase as it's a no-op for Original and UpperCase
+	PreserveInitialism = 1 << 16
 )
 
 // We have 3 convert functions for performance reasons
@@ -67,7 +80,7 @@ func convertWithoutInitialisms(input string, delimiter rune, wordCase WordCase) 
 			}
 			inWord = false
 		}
-		switch wordCase {
+		switch wordCase & WordCaseMask {
 		case UpperCase:
 			b.WriteRune(toUpper(curr))
 		case LowerCase:
@@ -140,7 +153,7 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 
 		for i := start; i < end; i++ {
 			r := runes[i]
-			switch wordCase {
+			switch wordCase & WordCaseMask {
 			case UpperCase:
 				panic("use convertWithoutInitialisms instead")
 			case LowerCase:
@@ -241,6 +254,20 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 				}
 			}
 		}
+		// If we're preserving initialism, check to see if the entire word is
+		// an initialism.
+		fmt.Println("here", wordCase, wordCase&WordCaseOptionMask, PreserveInitialism)
+		if wordCase&WordCaseOptionMask == PreserveInitialism {
+			allCaps := true
+			for i := start; i < end; i++ {
+				allCaps = allCaps && isUpper(runes[i])
+			}
+			if allCaps {
+				b.WriteString(string(runes[start:end]))
+				firstWord = false
+				return
+			}
+		}
 
 		skipIdx := 0
 		for i := start; i < end; i++ {
@@ -249,7 +276,7 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 				continue
 			}
 			r := runes[i]
-			switch wordCase {
+			switch wordCase & WordCaseMask {
 			case UpperCase:
 				b.WriteRune(toUpper(r))
 			case LowerCase:

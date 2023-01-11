@@ -21,6 +21,15 @@ func TestEdges(t *testing.T) {
 		}()
 		convertWithGoInitialisms("foo", 0, UpperCase)
 	})
+
+}
+
+func TestOrignal(t *testing.T) {
+	caser := NewCaser(false, nil, nil)
+	assert.Equal(t, "nativeOrgURL", caser.ToCase("NativeOrgURL", CamelCase|PreserveInitialism, 0))
+	fmt.Printf("%d\n", CamelCase)
+	fmt.Printf("%d\n", CamelCase&WordCaseMask)
+	fmt.Printf("%d\n", CamelCase&WordCaseOptionMask)
 }
 
 func TestAll(t *testing.T) {
