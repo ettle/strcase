@@ -147,9 +147,10 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 			for i := start; i < end; i++ {
 				word.WriteRune(toUpper(runes[i]))
 			}
-			if golintInitialisms[word.String()] {
+			w := word.String()
+			if golintInitialisms[w] {
 				if !firstWord || wordCase&wordCaseMask != CamelCase || wordCase&InitialismFirstWord != 0 {
-					b.WriteString(word.String())
+					b.WriteString(w)
 					firstWord = false
 					return
 				}
@@ -250,10 +251,10 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 			for i := start; i < end; i++ {
 				word.WriteRune(toUpper(runes[i]))
 			}
-			key := word.String()
-			if initialisms[key] {
+			w := word.String()
+			if initialisms[w] {
 				if !firstWord || wordCase&wordCaseMask != CamelCase || wordCase&InitialismFirstWord != 0 {
-					b.WriteString(key)
+					b.WriteString(w)
 					firstWord = false
 					return
 				}
