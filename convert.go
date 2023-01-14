@@ -1,6 +1,9 @@
 package strcase
 
-import "strings"
+import (
+	"strings"
+	"unicode"
+)
 
 // WordCase is an enumeration of the ways to format a word.
 type WordCase int
@@ -129,11 +132,25 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 			for i := start; i < end; i++ {
 				word.WriteRune(toUpper(runes[i]))
 			}
-			if golintInitialisms[word.String()] {
+			w := word.String()
+			if golintInitialisms[w] {
 				if !firstWord || wordCase != CamelCase {
-					b.WriteString(word.String())
+					b.WriteString(w)
 					firstWord = false
 					return
+				}
+			}
+			// Handle an intialism trailed by numbers, ala ID3
+			if !unicode.IsLetter(runes[end-1]) {
+				trimmed := strings.TrimRightFunc(w, func(r rune) bool {
+					return !unicode.IsLetter(r)
+				})
+				if golintInitialisms[trimmed] {
+					if !firstWord || wordCase != CamelCase {
+						b.WriteString(w)
+						firstWord = false
+						return
+					}
 				}
 			}
 		}
@@ -232,12 +249,25 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 			for i := start; i < end; i++ {
 				word.WriteRune(toUpper(runes[i]))
 			}
-			key := word.String()
-			if initialisms[key] {
+			w := word.String()
+			if initialisms[w] {
 				if !firstWord || wordCase != CamelCase {
-					b.WriteString(key)
+					b.WriteString(w)
 					firstWord = false
 					return
+				}
+			}
+			// Handle an intialism trailed by numbers, ala ID3
+			if !unicode.IsLetter(runes[end-1]) {
+				trimmed := strings.TrimRightFunc(w, func(r rune) bool {
+					return !unicode.IsLetter(r)
+				})
+				if initialisms[trimmed] {
+					if !firstWord || wordCase != CamelCase {
+						b.WriteString(w)
+						firstWord = false
+						return
+					}
 				}
 			}
 		}
