@@ -28,7 +28,7 @@ Example usage
 
 String strcase is pretty straight forward and there are a number of methods to
 do it. This package is fully featured, more customizable, better tested, and
-faster* than other packages and what you would probably whip up yourself.
+faster than other packages and what you would probably whip up yourself.
 
 ### Unicode support
 
@@ -125,7 +125,7 @@ or reword my commentary based on suggestions or updates.
 
 ### Zero dependencies
 
-That's right - zero. We only import Go standard library. No hassles with
+That's right - zero. We only import the Go standard library. No hassles with
 dependencies, licensing, security alerts.
 
 ## Why not this package
