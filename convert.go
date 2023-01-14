@@ -1,8 +1,13 @@
 package strcase
 
-import "strings"
+import (
+	"strings"
+	"unicode"
+)
 
 // WordCase is an enumeration of the ways to format a word.
+// The first 16 bits are base casers
+// The second 16 bits are options
 type WordCase int
 
 const (
@@ -18,7 +23,34 @@ const (
 	// Notably, even if the first word is an initialism, it will be lower
 	// cased. This is important for code generators where capital letters
 	// mean exported functions. i.e. jsonString(), not JSONString()
+	//
+	// Use CamelCase|InitialismFirstWord (see options below) if you want to
+	// have initialisms like JSONString
 	CamelCase
+)
+
+const (
+	wordCaseMask = 0xFFFF
+	// InitialismFirstWord will allow CamelCase to start with an upper case
+	// letter if it is an initialism. Only impacts CamelCase.
+	// LowerCase will initialize all specified initialisms, regardless of position.
+	//
+	// e.g ToGoCase("jsonString", CamelCase|InitialismFirstWord, 0) == "JSONString"
+	InitialismFirstWord WordCase = 1 << 17
+
+	// PreserveInitialism will treat any capitalized words as initialisms
+	// If the entire word is all upper case, keep them upper case.
+	//
+	// Note that you may also use InitialismFirstWord with PreserveInitialism
+	// e.g. CamelCase|InitialismFirstWord|PreserveInitialism: NASA-rocket -> NASARocket
+	// e.g. CamelCase|PreserveInitialism: NASA-rocket -> nasaRocket
+	//
+	// Works for LowerCase, TitleCase, and CamelCase. No impact on Original
+	// and UpperCase.
+	//
+	// Not recommended when the input is in SCREAMING_SNAKE_CASE
+	// as all words will be treated as initialisms.
+	PreserveInitialism WordCase = 1 << 16
 )
 
 // We have 3 convert functions for performance reasons
@@ -67,7 +99,7 @@ func convertWithoutInitialisms(input string, delimiter rune, wordCase WordCase) 
 			}
 			inWord = false
 		}
-		switch wordCase {
+		switch wordCase & wordCaseMask {
 		case UpperCase:
 			b.WriteRune(toUpper(curr))
 		case LowerCase:
@@ -131,7 +163,7 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 			}
 			w := word.String()
 			if golintInitialisms[w] {
-				if !firstWord || wordCase != CamelCase {
+				if !firstWord || wordCase&wordCaseMask != CamelCase || wordCase&InitialismFirstWord != 0 {
 					b.WriteString(w)
 					firstWord = false
 					return
@@ -141,7 +173,7 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 
 		for i := start; i < end; i++ {
 			r := runes[i]
-			switch wordCase {
+			switch wordCase & wordCaseMask {
 			case UpperCase:
 				panic("use convertWithoutInitialisms instead")
 			case LowerCase:
@@ -235,8 +267,25 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 			}
 			w := word.String()
 			if initialisms[w] {
-				if !firstWord || wordCase != CamelCase {
+				if !firstWord || wordCase&wordCaseMask != CamelCase || wordCase&InitialismFirstWord != 0 {
 					b.WriteString(w)
+					firstWord = false
+					return
+				}
+			}
+		}
+		// If we're preserving initialism, check to see if the entire word is
+		// an initialism.
+		// Note we don't support preserving initialisms if they are followed
+		// by a number and we're not spliting before numbers
+		if !firstWord || wordCase&InitialismFirstWord != 0 || wordCase&wordCaseMask != CamelCase {
+			if wordCase&PreserveInitialism != 0 {
+				allCaps := true
+				for i := start; i < end; i++ {
+					allCaps = allCaps && (isUpper(runes[i]) || !unicode.IsLetter(runes[i]))
+				}
+				if allCaps {
+					b.WriteString(string(runes[start:end]))
 					firstWord = false
 					return
 				}
@@ -250,7 +299,7 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 				continue
 			}
 			r := runes[i]
-			switch wordCase {
+			switch wordCase & wordCaseMask {
 			case UpperCase:
 				b.WriteRune(toUpper(r))
 			case LowerCase:

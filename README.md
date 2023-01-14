@@ -514,11 +514,13 @@ const (
 
 
 
-## <a name="WordCase">type</a> [WordCase](./convert.go#L6)
+## <a name="WordCase">type</a> [WordCase](./convert.go#L11)
 ``` go
 type WordCase int
 ```
 WordCase is an enumeration of the ways to format a word.
+The first 16 bits are base casers
+The second 16 bits are options
 
 
 ``` go
@@ -535,7 +537,36 @@ const (
     // Notably, even if the first word is an initialism, it will be lower
     // cased. This is important for code generators where capital letters
     // mean exported functions. i.e. jsonString(), not JSONString()
+    //
+    // Use CamelCase|InitialismFirstWord (see options below) if you want to
+    // have initialisms like JSONString
     CamelCase
+)
+```
+
+``` go
+const (
+
+    // InitialismFirstWord will allow CamelCase to start with an upper case
+    // letter if it is an initialism. Only impacts CamelCase.
+    // LowerCase will initialize all specified initialisms, regardless of position.
+    //
+    // e.g ToGoCase("jsonString", CamelCase|InitialismFirstWord, 0) == "JSONString"
+    InitialismFirstWord WordCase = 1 << 17
+
+    // PreserveInitialism will treat any capitalized words as initialisms
+    // If the entire word is all upper case, keep them upper case.
+    //
+    // Note that you may also use InitialismFirstWord with PreserveInitialism
+    // e.g. CamelCase|InitialismFirstWord|PreserveInitialism: NASA-rocket -> NASARocket
+    // e.g. CamelCase|PreserveInitialism: NASA-rocket -> nasaRocket
+    //
+    // Works for LowerCase, TitleCase, and CamelCase. No impact on Original
+    // and UpperCase.
+    //
+    // Not recommended when the input is in SCREAMING_SNAKE_CASE
+    // as all words will be treated as initialisms.
+    PreserveInitialism WordCase = 1 << 16
 )
 ```
 
