@@ -28,7 +28,7 @@ Example usage
 
 String strcase is pretty straight forward and there are a number of methods to
 do it. This package is fully featured, more customizable, better tested, and
-faster* than other packages and what you would probably whip up yourself.
+faster than other packages and what you would probably whip up yourself.
 
 ### Unicode support
 
@@ -87,35 +87,37 @@ Hopefully I was fair to each library and happy to rerun benchmarks differently
 or reword my commentary based on suggestions or updates.
 
 	// This package - faster then almost all libraries
-	// Initialisms are more complicated and slightly slower, but still faster then other libraries that do less
-	BenchmarkToTitle-4                       7821166               221 ns/op              32 B/op          1 allocs/op
-	BenchmarkToSnake-4                       9378589               202 ns/op              32 B/op          1 allocs/op
-	BenchmarkToSNAKE-4                       6174453               223 ns/op              32 B/op          1 allocs/op
-	BenchmarkToGoSnake-4                     3114266               434 ns/op              44 B/op          4 allocs/op
-	BenchmarkToCustomCaser-4                 2973855               448 ns/op              56 B/op          4 allocs/op
+	// Initialisms are more complicated and slightly slower, but still fast
+	BenchmarkToTitle-96                      9617142               125.7 ns/op            16 B/op          1 allocs/op
+	BenchmarkToSnake-96                     10659919               120.7 ns/op            16 B/op          1 allocs/op
+	BenchmarkToSNAKE-96                      9018282               126.4 ns/op            16 B/op          1 allocs/op
+	BenchmarkToGoSnake-96                    4903687               254.5 ns/op            26 B/op          4 allocs/op
+	BenchmarkToCustomCaser-96                4434489               265.0 ns/op            28 B/op          4 allocs/op
 
 	// Segment has very fast snake case and camel case libraries
 	// No features or customization, but very very fast
-	BenchmarkSegment-4                      24003495                64.9 ns/op            16 B/op          1 allocs/op
+	BenchmarkSegment-96                     33625734                35.54 ns/op           16 B/op          1 allocs/op
 
-	// Stdlib strings.Title for comparison, even though it only splits on spaces
-	BenchmarkToTitleStrings-4               11259376               161 ns/op              16 B/op          1 allocs/op
+	// Iancoleman has gotten some performance improvements, but remains
+	// without unicode support and lacks fine-grained customization
+	BenchmarkToSnakeIan-96                  13141522                92.99 ns/op           16 B/op          1 allocs/op
+
+	// Stdlib strings.Title is deprecated; using golang.org/x.text
+	BenchmarkGolangOrgXTextCases-96          4665676               262.5 ns/op           272 B/op          2 allocs/op
 
 	// Other libraries or code snippets
 	// - Most are slower, by up to an order of magnitude
-	// - None support initialisms or customization
+	// - No support for initialisms or customization
 	// - Some generate only camelCase or snake_case
 	// - Many lack unicode support
-	BenchmarkToSnakeStoewer-4                7103268               297 ns/op              64 B/op          2 allocs/op
+	BenchmarkToSnakeStoewer-96               8095468               148.9 ns/op            64 B/op          2 allocs/op
 	// Copying small rune arrays is slow
-	BenchmarkToSnakeSiongui-4                3710768               413 ns/op              48 B/op         10 allocs/op
-	BenchmarkGoValidator-4                   2416479              1049 ns/op             184 B/op          9 allocs/op
+	BenchmarkToSnakeSiongui-96               2912593               401.7 ns/op           112 B/op         19 allocs/op
+	BenchmarkGoValidator-96                  3493800               342.6 ns/op           184 B/op          9 allocs/op
 	// String alloction is slow
-	BenchmarkToSnakeFatih-4                  1000000              2407 ns/op             624 B/op         26 allocs/op
-	BenchmarkToSnakeIanColeman-4             1005766              1426 ns/op             160 B/op         13 allocs/op
+	BenchmarkToSnakeFatih-96                 1282648               945.1 ns/op           616 B/op         26 allocs/op
 	// Regexp is slow
-	BenchmarkToSnakeGolangPrograms-4          614689              2237 ns/op             225 B/op         11 allocs/op
-
+	BenchmarkToSnakeGolangPrograms-96         778674              1495 ns/op             227 B/op         11 allocs/op
 
 	// These results aren't a surprise - my initial version of this library was
 	// painfully slow. I think most of us, without spending some time with
@@ -123,7 +125,7 @@ or reword my commentary based on suggestions or updates.
 
 ### Zero dependencies
 
-That's right - zero. We only import Go standard library. No hassles with
+That's right - zero. We only import the Go standard library. No hassles with
 dependencies, licensing, security alerts.
 
 ## Why not this package

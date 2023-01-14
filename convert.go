@@ -39,7 +39,7 @@ func convertWithoutInitialisms(input string, delimiter rune, wordCase WordCase) 
 	}
 
 	var b strings.Builder
-	b.Grow(len(input) * 2) // In case we need to write delimiters where they weren't before
+	b.Grow(len(input) + 4) // In case we need to write delimiters where they weren't before
 
 	var prev, curr rune
 	next := runes[0] // 0 length will have already returned so safe to index
@@ -91,7 +91,7 @@ func convertWithoutInitialisms(input string, delimiter rune, wordCase WordCase) 
 			// Must be original case
 			b.WriteRune(curr)
 		}
-		inWord = inWord || true
+		inWord = true
 	}
 	return b.String()
 }
@@ -108,7 +108,7 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 	}
 
 	var b strings.Builder
-	b.Grow(len(input) * 2) // In case we need to write delimiters where they weren't before
+	b.Grow(len(input) + 4) // In case we need to write delimiters where they weren't before
 
 	firstWord := true
 
@@ -124,10 +124,14 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 		// Don't bother with initialisms if the word is longer than 5
 		// A quick proxy to avoid the extra memory allocations
 		if end-start <= 5 {
-			key := strings.ToUpper(string(runes[start:end]))
-			if golintInitialisms[key] {
+			var word strings.Builder
+			word.Grow(end - start)
+			for i := start; i < end; i++ {
+				word.WriteRune(toUpper(runes[i]))
+			}
+			if golintInitialisms[word.String()] {
 				if !firstWord || wordCase != CamelCase {
-					b.WriteString(key)
+					b.WriteString(word.String())
 					firstWord = false
 					return
 				}
@@ -201,7 +205,7 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 	}
 
 	var b strings.Builder
-	b.Grow(len(input) * 2) // In case we need to write delimiters where they weren't before
+	b.Grow(len(input) + 4) // In case we need to write delimiters where they weren't before
 
 	firstWord := true
 	var skipIndexes []int
@@ -224,6 +228,7 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 		// I'm open to it if there is a use case
 		if initialisms != nil {
 			var word strings.Builder
+			word.Grow(end - start)
 			for i := start; i < end; i++ {
 				word.WriteRune(toUpper(runes[i]))
 			}
