@@ -25,11 +25,39 @@ func TestEdges(t *testing.T) {
 }
 
 func TestOrignal(t *testing.T) {
+
+	// In the plain ToCase, we don't support any initialisms
+	assertEqual(t, "nativeOrgUrl", ToCase("NativeOrgURL", CamelCase, 0))
+	assertEqual(t, "nativeOrgUrl", ToCase("NativeOrgUrl", CamelCase|PreserveInitialism, 0))
+	assertEqual(t, "nativeOrgUrl", ToCase("NativeOrgUrl", CamelCase|InitialismFirstWord, 0))
+
+	// For ToGoCase, preserve intialism will do nothing since we ony intialize
+	// Go initialisms
+	assertEqual(t, "nativeOrgURL", ToGoCase("NativeOrgUrl", CamelCase, 0))
+	assertEqual(t, "nativeOrgURL", ToGoCase("NativeOrgURL", CamelCase, 0))
+	assertEqual(t, "nativeOrgURL", ToGoCase("NativeOrgURL", CamelCase|PreserveInitialism, 0))
+	// But InitialismFirstWord will impact camelcase
+	assertEqual(t, "JSONString", ToGoCase("jsonString", CamelCase|InitialismFirstWord, 0))
+	// LowerCase and others will initialize all words already
+	assertEqual(t, "JSON-string", ToGoCase("jsonString", LowerCase, '-'))
+
 	caser := NewCaser(false, nil, nil)
-	assert.Equal(t, "nativeOrgURL", caser.ToCase("NativeOrgURL", CamelCase|PreserveInitialism, 0))
-	fmt.Printf("%d\n", CamelCase)
-	fmt.Printf("%d\n", CamelCase&WordCaseMask)
-	fmt.Printf("%d\n", CamelCase&WordCaseOptionMask)
+	assertEqual(t, "native-org-url", caser.ToCase("NativeOrgURL", LowerCase, '-'))
+	assertEqual(t, "native-org-URL", caser.ToCase("NativeOrgURL", LowerCase|PreserveInitialism, '-'))
+	assertEqual(t, "native-org-url", caser.ToCase("NativeOrgUrl", LowerCase|PreserveInitialism, '-'))
+	assertEqual(t, "JSON-string", caser.ToCase("JSONString", LowerCase|PreserveInitialism, '-'))
+	assertEqual(t, "json-string", caser.ToCase("jsonString", LowerCase|PreserveInitialism, '-'))
+
+	assertEqual(t, "nativeOrgUrl", caser.ToCase("NativeOrgURL", CamelCase, 0))
+	assertEqual(t, "nativeOrgUrl", caser.ToCase("NativeOrgUrl", CamelCase|PreserveInitialism, 0))
+	assertEqual(t, "nativeOrgURL", caser.ToCase("NativeOrgURL", CamelCase|PreserveInitialism, 0))
+
+	assertEqual(t, "jsonString", caser.ToCase("JSONString", CamelCase|PreserveInitialism, 0))
+	assertEqual(t, "jsonString", caser.ToCase("jsonString", CamelCase|PreserveInitialism, 0))
+	assertEqual(t, "JSONString", caser.ToCase("JSONString", CamelCase|PreserveInitialism|InitialismFirstWord, 0))
+	assertEqual(t, "jsonString", caser.ToCase("JSONString", CamelCase|InitialismFirstWord, 0))
+
+	assertEqual(t, "PS4", caser.ToCase("PS4", LowerCase|PreserveInitialism, '-'))
 }
 
 func TestAll(t *testing.T) {
