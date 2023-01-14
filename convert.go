@@ -1,9 +1,6 @@
 package strcase
 
-import (
-	"strings"
-	"unicode"
-)
+import "strings"
 
 // WordCase is an enumeration of the ways to format a word.
 type WordCase int
@@ -140,19 +137,6 @@ func convertWithGoInitialisms(input string, delimiter rune, wordCase WordCase) s
 					return
 				}
 			}
-			// Handle an intialism trailed by numbers, ala ID3
-			if !unicode.IsLetter(runes[end-1]) {
-				trimmed := strings.TrimRightFunc(w, func(r rune) bool {
-					return !unicode.IsLetter(r)
-				})
-				if golintInitialisms[trimmed] {
-					if !firstWord || wordCase != CamelCase {
-						b.WriteString(w)
-						firstWord = false
-						return
-					}
-				}
-			}
 		}
 
 		for i := start; i < end; i++ {
@@ -255,19 +239,6 @@ func convert(input string, fn SplitFn, delimiter rune, wordCase WordCase,
 					b.WriteString(w)
 					firstWord = false
 					return
-				}
-			}
-			// Handle an intialism trailed by numbers, ala ID3
-			if !unicode.IsLetter(runes[end-1]) {
-				trimmed := strings.TrimRightFunc(w, func(r rune) bool {
-					return !unicode.IsLetter(r)
-				})
-				if initialisms[trimmed] {
-					if !firstWord || wordCase != CamelCase {
-						b.WriteString(w)
-						firstWord = false
-						return
-					}
 				}
 			}
 		}
