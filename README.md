@@ -168,6 +168,7 @@ custom casers to mimic the behavior of the other package.
 
 
 ## <a name="pkg-index">Index</a>
+* [Constants](#pkg-constants)
 * [func ToCamel(s string) string](#func-ToCamel)
 * [func ToCase(s string, wordCase WordCase, delimiter rune) string](#func-ToCase)
 * [func ToGoCamel(s string) string](#func-ToGoCamel)
@@ -195,6 +196,22 @@ custom casers to mimic the behavior of the other package.
 * [type SplitOption](#type-SplitOption)
 * [type WordCase](#type-WordCase)
 
+
+## <a name="pkg-constants">Constants</a>
+``` go
+const (
+
+    // If the entire word is all capitalized, keep them capitalized
+    // Works LowerCase, TitleCase, and CamelCase
+    // No impact on Original and UpperCase
+    PreserveInitialism = 1 << 16
+    // If InitialismFirstWord, camelCase jsonString is JSONString
+    // Only impacts camelCase
+    // LowerCase will initialize all initialisms that it's told to
+    InitialismFirstWord = 1 << 17
+)
+```
+Other word case options
 
 
 
@@ -514,11 +531,13 @@ const (
 
 
 
-## <a name="WordCase">type</a> [WordCase](./convert.go#L6)
+## <a name="WordCase">type</a> [WordCase](./convert.go#L11)
 ``` go
 type WordCase int
 ```
 WordCase is an enumeration of the ways to format a word.
+The first 16 bits are base casers
+The second 16 bits are options
 
 
 ``` go

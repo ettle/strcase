@@ -57,7 +57,14 @@ func TestOrignal(t *testing.T) {
 	assertEqual(t, "JSONString", caser.ToCase("JSONString", CamelCase|PreserveInitialism|InitialismFirstWord, 0))
 	assertEqual(t, "jsonString", caser.ToCase("JSONString", CamelCase|InitialismFirstWord, 0))
 
+	assertEqual(t, "NASA-rocket", caser.ToCase("NASARocket", LowerCase|PreserveInitialism, '-'))
+	assertEqual(t, "nasa-rocket", caser.ToCase("NasaRocket", LowerCase|PreserveInitialism, '-'))
+	assertEqual(t, "nasa-rocket", caser.ToCase("NASARocket", LowerCase, '-'))
+
+	assertEqual(t, "ps4", caser.ToCase("ps4", LowerCase, '-'))
 	assertEqual(t, "PS4", caser.ToCase("PS4", LowerCase|PreserveInitialism, '-'))
+	assertEqual(t, "ps4", caser.ToCase("Ps4", LowerCase|PreserveInitialism, '-'))
+	assertEqual(t, "ps4", caser.ToCase("ps4", LowerCase, '-'))
 }
 
 func TestAll(t *testing.T) {
