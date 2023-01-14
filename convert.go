@@ -23,20 +23,34 @@ const (
 	// Notably, even if the first word is an initialism, it will be lower
 	// cased. This is important for code generators where capital letters
 	// mean exported functions. i.e. jsonString(), not JSONString()
+	//
+	// Use CamelCase|InitialismFirstWord (see options below) if you want to
+	// have initialisms like JSONString
 	CamelCase
 )
 
-// Other word case options
 const (
 	wordCaseMask = 0xFFFF
-	// If the entire word is all capitalized, keep them capitalized
-	// Works LowerCase, TitleCase, and CamelCase
-	// No impact on Original and UpperCase
-	PreserveInitialism = 1 << 16
-	// If InitialismFirstWord, camelCase jsonString is JSONString
-	// Only impacts camelCase
-	// LowerCase will initialize all initialisms that it's told to
-	InitialismFirstWord = 1 << 17
+	// InitialismFirstWord will allow CamelCase to start with an upper case
+	// letter if it is an initialism. Only impacts CamelCase.
+	// LowerCase will initialize all specified initialisms, regardless of position.
+	//
+	// e.g ToGoCase("jsonString", CamelCase|InitialismFirstWord, 0) == "JSONString"
+	InitialismFirstWord WordCase = 1 << 17
+
+	// PreserveInitialism will treat any capitalized words as initialisms
+	// If the entire word is all upper case, keep them upper case.
+	//
+	// Note that you may also use InitialismFirstWord with PreserveInitialism
+	// e.g. CamelCase|InitialismFirstWord|PreserveInitialism: NASA-rocket -> NASARocket
+	// e.g. CamelCase|PreserveInitialism: NASA-rocket -> nasaRocket
+	//
+	// Works for LowerCase, TitleCase, and CamelCase. No impact on Original
+	// and UpperCase.
+	//
+	// Not recommended when the input is in SCREAMING_SNAKE_CASE
+	// as all words will be treated as initialisms.
+	PreserveInitialism WordCase = 1 << 16
 )
 
 // We have 3 convert functions for performance reasons

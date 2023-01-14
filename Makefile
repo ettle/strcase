@@ -11,7 +11,6 @@ test:
 lint:
 	which golangci-lint || go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
 	golangci-lint run
-	golangci-lint run benchmark/*.go
 	go mod tidy
 
 benchmark:

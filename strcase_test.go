@@ -21,17 +21,15 @@ func TestEdges(t *testing.T) {
 		}()
 		convertWithGoInitialisms("foo", 0, UpperCase)
 	})
-
 }
 
 func TestOrignal(t *testing.T) {
-
 	// In the plain ToCase, we don't support any initialisms
 	assertEqual(t, "nativeOrgUrl", ToCase("NativeOrgURL", CamelCase, 0))
 	assertEqual(t, "nativeOrgUrl", ToCase("NativeOrgUrl", CamelCase|PreserveInitialism, 0))
 	assertEqual(t, "nativeOrgUrl", ToCase("NativeOrgUrl", CamelCase|InitialismFirstWord, 0))
 
-	// For ToGoCase, preserve intialism will do nothing since we ony intialize
+	// For ToGoCase, preserve initialism will do nothing since we ony initialize
 	// Go initialisms
 	assertEqual(t, "nativeOrgURL", ToGoCase("NativeOrgUrl", CamelCase, 0))
 	assertEqual(t, "nativeOrgURL", ToGoCase("NativeOrgURL", CamelCase, 0))
@@ -65,6 +63,9 @@ func TestOrignal(t *testing.T) {
 	assertEqual(t, "PS4", caser.ToCase("PS4", LowerCase|PreserveInitialism, '-'))
 	assertEqual(t, "ps4", caser.ToCase("Ps4", LowerCase|PreserveInitialism, '-'))
 	assertEqual(t, "ps4", caser.ToCase("ps4", LowerCase, '-'))
+
+	// Not a great option if you're coming from an all-caps case
+	assertEqual(t, "SCREAMING-CASE", caser.ToCase("SCREAMING_CASE", LowerCase|PreserveInitialism, '-'))
 }
 
 func TestAll(t *testing.T) {
